@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Manager Dashboard</title>
+    
+    <!-- Cấu hình Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Bật Dark Mode bằng class
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- EasyMDE Markdown Editor CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    
+    <!-- Custom Theme Script -->
+    <script src="/js/theme.js"></script>
+
+    <style>
+        /* Tùy chỉnh thanh cuộn gọn gàng hơn */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background-color: #475569; }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300">
+
+    <div class="flex h-screen overflow-hidden">
+        <%- include('partials/sidebar') %>
+
+        <div class="flex-1 flex flex-col w-full">
+            <%- include('partials/header') %>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900 p-4 md:p-6 transition-colors duration-300">
+                <%- body %>
+            </main>
+        </div>
+    </div>
+
+    <%- include('partials/toast') %>
+    <%- include('partials/confirm') %>
+    <!-- Profile Modal (Change Password) -->
+    <%- include('partials/profileModal') %>
+    <!-- Main Frontend Script (Sidebar, Toast) -->
+    <script src="/js/main.js"></script>
+
+    <!-- Markdown Libraries -->
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</body>
+</html>

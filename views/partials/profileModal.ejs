@@ -1,0 +1,38 @@
+<!-- Profile Modal -->
+<div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 dark:bg-opacity-70 opacity-0 hidden transition-opacity duration-300" onclick="closeProfileModal()">
+    <div id="profileModalContent" class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 m-4 transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="flex items-start justify-between pb-4 border-b rounded-t dark:border-gray-600">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                Đổi mật khẩu
+            </h3>
+            <button type="button" onclick="closeProfileModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                <i class="fas fa-times w-5 h-5"></i>
+                <span class="sr-only">Close modal</span>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="pt-6">
+            <form id="changePasswordForm" class="space-y-6">
+                <div>
+                    <label for="oldPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu cũ</label>
+                    <input type="password" name="oldPassword" id="oldPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="••••••••" required>
+                </div>
+                <div>
+                    <label for="newPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu mới</label>
+                    <input type="password" name="newPassword" id="newPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="••••••••" required>
+                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Phải có ít nhất 8 ký tự.</p>
+                </div>
+                <div>
+                    <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Xác nhận mật khẩu mới</label>
+                    <input type="password" name="confirmPassword" id="confirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Lưu thay đổi
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,284 @@
+<!-- Wrapper Chính -->
+<div class="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 relative min-h-[500px]">
+    <!-- Toolbar -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white"></h2>
+        <button onclick="openEmployeeModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
+            <i class="fas fa-user-plus"></i> Thêm Người dùng
+        </button>
+    </div>
+
+    <!-- Hiển thị Bảng (PC) -->
+    <div class="hidden md:block overflow-x-auto">
+        <table class="w-full text-left border-collapse whitespace-nowrap">
+            <thead>
+                <tr class="bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 text-sm border-b border-gray-200 dark:border-gray-700">
+                    <th class="p-3 font-medium">Họ và tên</th>
+                    <th class="p-3 font-medium">Username</th>
+                    <th class="p-3 font-medium">Chức vụ</th>
+                    <th class="p-3 font-medium text-center">Trạng thái</th>
+                    <th class="p-3 font-medium text-right">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="desktop-employee-list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                <!-- Render bằng JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Hiển thị Dạng Card (Mobile) -->
+    <div id="mobile-employee-list" class="grid grid-cols-1 gap-4 md:hidden">
+        <!-- Render bằng JS -->
+    </div>
+</div>
+
+<!-- Modal Thêm/Sửa Nhân viên -->
+<div id="employeeModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeEmployeeModal()"></div>
+    <div id="employeeModalContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg relative z-10 mx-4 transform scale-95 transition-transform duration-300">
+        <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 id="modalTitle" class="text-lg font-bold text-gray-800 dark:text-white">Thêm Người dùng</h3>
+            <button type="button" onclick="closeEmployeeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+        <form id="employeeForm" class="p-5 space-y-4">
+            <input type="hidden" id="empId">
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                <input type="text" id="empName" required placeholder="VD: Nguyễn Văn A" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username <span class="text-red-500">*</span></label>
+                    <input type="text" id="empUsername" required placeholder="VD: nva_admin" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white font-mono text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Trạng thái</label>
+                    <select id="empStatus" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+                        <option value="Active">Hoạt động (Active)</option>
+                        <option value="Inactive">Tạm khóa (Inactive)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Chức vụ <span class="text-red-500">*</span></label>
+                <input type="text" id="empRole" required placeholder="VD: System Admin" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100 dark:border-gray-700">
+                <button type="button" onclick="closeEmployeeModal()" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors focus:outline-none">Hủy</button>
+                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none flex items-center gap-2">
+                    <i class="fas fa-save"></i> Lưu thông tin
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    let employeesData = [];
+    const desktopList = document.getElementById('desktop-employee-list');
+    const mobileList = document.getElementById('mobile-employee-list');
+    const empModal = document.getElementById('employeeModal');
+    const empContent = document.getElementById('employeeModalContent');
+    const empForm = document.getElementById('employeeForm');
+    const empIdInput = document.getElementById('empId');
+    const empNameInput = document.getElementById('empName');
+    const empUsernameInput = document.getElementById('empUsername');
+    const empRoleInput = document.getElementById('empRole');
+    const empStatusInput = document.getElementById('empStatus');
+    const modalTitle = document.getElementById('modalTitle');
+
+    // --- UTILITY FUNCTIONS ---
+    const openModal = () => {
+        empModal.classList.remove('hidden');
+        setTimeout(() => {
+            empModal.classList.remove('opacity-0');
+            empContent.classList.remove('scale-95');
+        }, 10);
+    };
+
+    const closeModal = () => {
+        empModal.classList.add('opacity-0');
+        empContent.classList.add('scale-95');
+        setTimeout(() => {
+            empModal.classList.add('hidden');
+        }, 300);
+    };
+
+    // --- RENDER FUNCTIONS ---
+    const getStatusBadge = (status) => {
+        const baseClass = 'px-2.5 py-1 rounded-full text-xs font-medium';
+        if (status === 'Active') {
+            return `${baseClass} bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400`;
+        }
+        return `${baseClass} bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400`;
+    };
+
+    const createEmployeeRow = (e) => `
+        <tr id="employee-row-${e._id}" class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors text-sm text-gray-800 dark:text-gray-200">
+            <td class="p-3 font-semibold employee-name">${e.name}</td>
+            <td class="p-3 font-mono text-blue-600 dark:text-blue-400 employee-username">${e.username}</td>
+            <td class="p-3 employee-role">${e.role}</td>
+            <td class="p-3 text-center">
+                <span class="employee-status ${getStatusBadge(e.status)}">${e.status}</span>
+            </td>
+            <td class="p-3 text-right whitespace-nowrap">
+                <button onclick="requestPasswordReset('${e._id}', '${e.name}')" class="text-orange-500 hover:text-orange-700 dark:hover:text-orange-400 w-8 h-8 rounded-full hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors" title="Reset Mật khẩu"><i class="fas fa-key"></i></button>
+                <button onclick="editEmployee('${e._id}')" class="text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 w-8 h-8 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" title="Sửa"><i class="fas fa-edit"></i></button>
+                ${e.username === 'admin'
+                    ? `<button class="text-gray-300 dark:text-gray-500 w-8 h-8 rounded-full cursor-not-allowed" title="Không thể xóa tài khoản Admin" disabled><i class="fas fa-trash"></i></button>`
+                    : `<button onclick="requestDelete('${e._id}', '${e.name}')" class="text-red-500 hover:text-red-700 dark:hover:text-red-400 w-8 h-8 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Xóa"><i class="fas fa-trash"></i></button>`
+                }
+            </td>
+        </tr>
+    `;
+
+    const createEmployeeCard = (e) => `
+        <div id="employee-card-${e._id}" class="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
+            <div class="flex justify-between items-start mb-2">
+                <h4 class="font-bold text-gray-800 dark:text-white employee-name">${e.name}</h4>
+                <span class="employee-status ${getStatusBadge(e.status)}">${e.status}</span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">User: <span class="font-mono text-blue-600 dark:text-blue-400 employee-username">${e.username}</span></p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Chức vụ: <span class="employee-role">${e.role}</span></p>
+            <div class="pt-3 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-2">
+                <button onclick="requestPasswordReset('${e._id}', '${e.name}')" class="text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 px-2 py-1 rounded transition-colors text-sm"><i class="fas fa-key"></i> Reset MK</button>
+                <button onclick="editEmployee('${e._id}')" class="text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1 rounded transition-colors text-sm"><i class="fas fa-edit"></i> Sửa</button>
+                ${e.username === 'admin'
+                    ? `<button class="text-gray-300 dark:text-gray-500 px-2 py-1 rounded cursor-not-allowed text-sm" title="Không thể xóa tài khoản Admin" disabled><i class="fas fa-trash"></i> Xóa</button>`
+                    : `<button onclick="requestDelete('${e._id}', '${e.name}')" class="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 px-2 py-1 rounded transition-colors text-sm"><i class="fas fa-trash"></i> Xóa</button>`
+                }
+            </div>
+        </div>
+    `;
+
+    const renderEmployees = () => {
+        if (employeesData.length === 0) {
+            const emptyRow = `<tr><td colspan="5" class="p-6 text-center text-gray-500">Chưa có dữ liệu.</td></tr>`;
+            const emptyCard = `<div class="p-6 text-center text-gray-500 border border-dashed rounded-xl">Chưa có dữ liệu.</div>`;
+            desktopList.innerHTML = emptyRow;
+            mobileList.innerHTML = emptyCard;
+            return;
+        }
+        desktopList.innerHTML = employeesData.map(createEmployeeRow).join('');
+        mobileList.innerHTML = employeesData.map(createEmployeeCard).join('');
+    };
+
+    // --- API & DATA FUNCTIONS ---
+    const fetchEmployees = async () => {
+        try {
+            const res = await fetch('/api/employees');
+            if (!res.ok) throw new Error('Failed to fetch data');
+            employeesData = await res.json();
+            renderEmployees();
+        } catch (err) {
+            showToast(err.message || 'Lỗi khi tải danh sách', 'error');
+        }
+    };
+
+    const saveEmployee = async (event) => {
+        event.preventDefault();
+        const id = empIdInput.value;
+        const data = {
+            name: empNameInput.value,
+            username: empUsernameInput.value,
+            role: empRoleInput.value,
+            status: empStatusInput.value
+        };
+
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/api/employees/${id}` : '/api/employees';
+
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            if (!res.ok) {
+                throw new Error(result.message || 'Lỗi lưu dữ liệu');
+            }
+
+            if (id) { // Update
+                const index = employeesData.findIndex(e => e._id === id);
+                if (index !== -1) employeesData[index] = result;
+                showToast('Cập nhật thành công!', 'success');
+            } else { // Create
+                employeesData.unshift(result);
+                showToast('Đã thêm người dùng! Mật khẩu mặc định là "password123".', 'success');
+            }
+            renderEmployees(); // Re-render the whole list
+            closeModal();
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    };
+
+    // --- UI ACTIONS ---
+    window.openEmployeeModal = () => {
+        empForm.reset();
+        empIdInput.value = '';
+        modalTitle.textContent = 'Thêm Người dùng';
+        openModal();
+    };
+
+    window.closeEmployeeModal = () => {
+        closeModal();
+    };
+
+    window.editEmployee = (id) => {
+        const employee = employeesData.find(e => e._id === id);
+        if (!employee) return;
+
+        empIdInput.value = employee._id;
+        empNameInput.value = employee.name;
+        empUsernameInput.value = employee.username;
+        empRoleInput.value = employee.role;
+        empStatusInput.value = employee.status;
+        modalTitle.textContent = 'Cập nhật thông tin';
+        openModal();
+    };
+
+    window.requestDelete = (id, name) => {
+        openConfirmDialog('Xóa Người dùng', `Bạn có chắc chắn muốn xóa người dùng <b>${name}</b> không? Dữ liệu không thể phục hồi.`, 'danger', async () => {
+            try {
+                const res = await fetch(`/api/employees/${id}`, { method: 'DELETE' });
+                const result = await res.json();
+                if (!res.ok) {
+                    throw new Error(result.message || 'Lỗi khi xóa');
+                }
+                employeesData = employeesData.filter(e => e._id !== id);
+                renderEmployees();
+                showToast('Đã xóa người dùng', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+    };
+
+    window.requestPasswordReset = (id, name) => {
+        openConfirmDialog('Reset Mật Khẩu', `Mật khẩu của tài khoản <b>${name}</b> sẽ được đặt lại về "password123". Bạn có chắc chắn?`, 'warning', async () => {
+            try {
+                const res = await fetch(`/api/employees/${id}/reset-password`, { method: 'POST' });
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.message || 'Lỗi khi reset mật khẩu');
+                }
+                showToast(data.message, 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+    };
+
+    // --- INITIALIZATION ---
+    empForm.addEventListener('submit', saveEmployee);
+    document.addEventListener('DOMContentLoaded', fetchEmployees);
+</script>

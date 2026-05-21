@@ -1,0 +1,41 @@
+Đóng vai là một Senior Node.js & Express Developer chuyên về UI/UX. Hãy giúp tôi xây dựng một Mini Web App dùng để quản lý hạ tầng IT nội bộ.
+
+Yêu cầu sử dụng kiến trúc MVC với Server-Side Rendering kết hợp AJAX để mang lại trải nghiệm mượt mà như SPA (Single Page Application).
+- Backend: Node.js, Express.js.
+- Template Engine: EJS.
+- Styling: Tailwind CSS (Sử dụng qua CDN).
+- Frontend Logic: Vanilla JavaScript (Fetch API cho AJAX).
+- Thiết kế: Mobile-first. Chú trọng vào các hiệu ứng chuyển động mượt mà (trượt, mờ dần) khi tương tác Modal, Toast.
+
+Hãy cung cấp cấu trúc thư mục và code cho các phần sau:
+
+1. GIAO DIỆN & HIỆU ỨNG (EJS Partials & Tailwind):
+- `views/partials/header.ejs`: Chứa Tailwind CDN và font icon (VD: FontAwesome để lấy icon con mắt, icon xóa...).
+- `views/partials/sidebar.ejs`: Sidebar điều hướng cho 3 module (Thiết bị, Knowledge Base, Nhân viên). Có hiệu ứng trượt trên Mobile.
+- `views/partials/toast.ejs`: Component thông báo, có hiệu ứng trượt từ góc phải màn hình vào.
+- `views/layout.ejs`: Layout chính.
+
+2. ROUTING & RESTful API (File `server.js`):
+- Khởi tạo Express server. Tạo Mock Data (Array) cho Devices, Notes, và Employees.
+- View Routes: 
+  - `GET /` (Thiết bị), `GET /knowledge-base` (Ghi chú), `GET /employees` (Nhân viên).
+- API Routes (Dùng cho Fetch AJAX):
+  - Viết các API CRUD đầy đủ (GET, POST, PUT, DELETE) cho Devices và Employees.
+  - Viết thêm API `POST /api/employees/:id/reset-password` để đặt lại mật khẩu.
+
+3. MODULE 1: QUẢN LÝ THIẾT BỊ MẠNG (`views/devices.ejs`)
+- UI: Table trên PC, Grid/Card trên Mobile. Modal thêm thiết bị có hiệu ứng mờ dần.
+- BẢO MẬT HIỂN THỊ: Cột "Mật khẩu quản trị" mặc định hiển thị dạng ẩn (***). Bên cạnh có một icon "con mắt" (toggle visibility), khi click bằng JS sẽ chuyển đổi giữa ẩn/hiện chuỗi mật khẩu gốc.
+- Client-side JS: Dùng Fetch API tải dữ liệu, thêm mới không cần reload trang.
+
+4. MODULE 2: KNOWLEDGE BASE (`views/kb.ejs`)
+- UI: Danh sách bài viết bên trái, chi tiết bên phải (khối lệnh CLI nền tối). 
+- Chức năng: Nút "Copy" trên code block, copy vào clipboard và hiện Toast báo thành công.
+
+5. MODULE 3: QUẢN LÝ NHÂN VIÊN IT (`views/employees.ejs`)
+- UI: Bảng danh sách nhân viên (Tên, User, Chức vụ, Trạng thái).
+- Chức năng AJAX (Không reload trang):
+  - Thêm, Sửa thông tin, Xóa nhân viên (có confirm trước khi xóa).
+  - ĐẶC BIỆT: Mỗi dòng có nút "Reset mật khẩu". Khi click, hiển thị hộp thoại xác nhận (Confirm dialog). Nếu đồng ý, gọi API fetch reset mật khẩu về mặc định (VD: '123456aA@'), sau đó hiện Toast thông báo "Đã reset mật khẩu thành công".
+
+Hãy đưa cho tôi code chi tiết của file `server.js` và các file `.ejs` cốt lõi nhất (`layout.ejs`, `devices.ejs`, `employees.ejs`) để tôi có thể chạy thử lệnh `node server.js` và trải nghiệm ngay.

@@ -1,0 +1,18 @@
+<!-- Global Toast Container -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3">
+    <!-- Toast items will be injected here by JS -->
+</div>
+
+<!-- Template for JS to clone -->
+<template id="toast-template">
+    <div class="toast-message transform transition-all duration-300 translate-x-full opacity-0 flex items-center w-full max-w-xs p-4 bg-white rounded-lg shadow-lg dark:bg-gray-800 border-l-4" role="alert">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg toast-icon-container">
+            <i class="toast-icon fas text-lg"></i>
+        </div>
+        <div class="ml-3 text-sm font-medium toast-text text-gray-800 dark:text-gray-200">Nội dung thông báo</div>
+        <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-transparent text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-700 transition-colors" onclick="this.closest('.toast-message').remove()" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</template>

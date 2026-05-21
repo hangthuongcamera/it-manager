@@ -1,0 +1,15 @@
+<!-- Global Custom Confirm Dialog -->
+<div id="confirmDialog" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeConfirmDialog()"></div>
+    <div id="confirmDialogContent" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-sm relative z-10 mx-4 transform scale-95 transition-transform duration-300 p-6 text-center">
+        <div id="confirmIconWrapper" class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 mx-auto flex items-center justify-center mb-4 transition-colors">
+            <i id="confirmIcon" class="fas fa-exclamation-triangle text-3xl"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2" id="confirmTitle">Xác nhận thao tác</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6" id="confirmMessage">Bạn có chắc chắn muốn thực hiện hành động này?</p>
+        <div class="flex justify-center gap-3">
+            <button type="button" onclick="closeConfirmDialog()" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">Hủy</button>
+            <button type="button" id="confirmBtn" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors">Đồng ý</button>
+        </div>
+    </div>
+</div>
