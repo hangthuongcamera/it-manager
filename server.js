@@ -28,8 +28,8 @@ const createInitialAdmin = async () => {
             console.log('👉 Vui lòng đăng nhập và đổi mật khẩu ngay lập tức!');
         }
     } catch (error) {
-        console.error('❌ Lỗi khi tạo tài khoản admin ban đầu:', error);
-        process.exit(1);
+        // Trong môi trường serverless, tránh dùng process.exit() vì nó sẽ làm crash function.
+        console.error('❌ Lỗi nghiêm trọng khi khởi tạo admin, server có thể không hoạt động đúng:', error);
     }
 };
 
@@ -70,7 +70,6 @@ app.use((req, res, next) => {
 app.use('/', viewRoutes);
 app.use('/api', apiRoutes);
 
-// --- START SERVER ---
-app.listen(PORT, () => {
-    console.log(`🚀 IT Manager App đang chạy tại: http://localhost:${PORT}`);
-});
+// Xuất app để Vercel có thể sử dụng nó như một serverless function.
+// Vercel sẽ tự xử lý việc lắng nghe (listen) request.
+module.exports = app;
